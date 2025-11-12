@@ -1,0 +1,22 @@
+# YOLOv8 Landmine Detection Dataset
+# Dataset created from synthetic data generation
+
+# Paths (relative to this file)
+path: E:/dataset_img/yolo_dataset
+train: train/images
+val: val/images  
+test: test/images
+
+# Classes
+nc: 1  # number of classes
+names: ['landmine']  # class names
+
+# Dataset statistics
+train_images: 20485
+val_images: 3737
+test_images: 778
+total_images: 25000
+
+# Dataset info
+description: "Synthetic landmine detection dataset generated from 45 terrain images and 30 landmine images"
+version: "1.0"
