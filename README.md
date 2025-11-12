@@ -133,42 +133,92 @@ This final stage uses the detection data to find a safe and efficient route acro
 
 -----
 
-### files:
-1) stitcher_yolo_path_finding.py : The first implementation script
-2) drone_landmine_detector.py : The implementation script converted into an importable class.
-     This library is organized into 5 main classes:
-            1. DroneImageStitcher
-            Handles video stitching with methods:
-            
-            capture_frames() - Extract frames from videos
-            stitch() - Stitch multiple videos into panorama
-            enhance_brightness_contrast() - Image enhancement
-            crop_black_borders() - Remove black borders
-            
-            2. LandmineDetector
-            Handles YOLO + SAHI detection:
-            
-            load_model() - Load YOLO model
-            detect() - Run SAHI detection on image
-            print_summary() - Show detection statistics
-            visualize_detections() - Draw bounding boxes
-            
-            3. PathFinder
-            A* pathfinding algorithm:
-            
-            add_obstacles() - Mark landmines as obstacles
-            find_path() - Find safe path from start to end
-            visualize_path() - Draw path on image
-            
-            4. DroneLandmineSystem
-            Complete integrated system:
-            
-            stitch_videos() - Stitch drone videos
-            detect_landmines() - Detect landmines
-            find_safe_path() - Find safe route
-            run_complete_pipeline() - Run everything automatically
+Here’s a clean and professional **Markdown** documentation section for your file and class organization:
 
-3) example.py : the example usage with 5 cases.
+---
 
+## 📂 Project Files Overview
+
+### 1. `stitcher_yolo_path_finding.py`
+
+**Description:**
+The **initial implementation script** that integrates drone video stitching, YOLO + SAHI detection, and path planning in a single workflow.
+
+---
+
+### 2. `drone_landmine_detector.py`
+
+**Description:**
+A **modular, importable Python library** version of the original implementation.
+This script organizes the system into **five main classes**, each handling a specific functional block of the drone landmine detection and path planning pipeline.
+
+#### 🧩 Class Overview
+
+---
+
+#### **1. `DroneImageStitcher`**
+
+Handles **drone video stitching and enhancement**.
+
+**Main Methods:**
+
+* `capture_frames()` — Extracts frames from input drone videos.
+* `stitch()` — Stitches multiple video frames into a large panoramic image.
+* `enhance_brightness_contrast()` — Enhances image brightness and contrast for better visibility.
+* `crop_black_borders()` — Removes black borders from the stitched output.
+
+---
+
+#### **2. `LandmineDetector`**
+
+Handles **YOLO + SAHI-based detection** of landmines or obstacles.
+
+**Main Methods:**
+
+* `load_model()` — Loads the custom YOLO model for inference.
+* `detect()` — Performs object detection using SAHI for large stitched images.
+* `print_summary()` — Displays detection statistics (e.g., count per class).
+* `visualize_detections()` — Draws bounding boxes and labels on the image.
+
+---
+
+#### **3. `PathFinder`**
+
+Implements an **A*** (A-star) **pathfinding algorithm** for safe route planning.
+
+**Main Methods:**
+
+* `add_obstacles()` — Marks detected landmines as obstacles in the grid.
+* `find_path()` — Computes a safe path from a given start to end coordinate.
+* `visualize_path()` — Draws the computed path over the stitched image.
+
+---
+
+#### **4. `DroneLandmineSystem`**
+
+Represents the **complete end-to-end system** integrating all components.
+
+**Main Methods:**
+
+* `stitch_videos()` — Handles video stitching using `DroneImageStitcher`.
+* `detect_landmines()` — Performs landmine detection using `LandmineDetector`.
+* `find_safe_path()` — Executes safe pathfinding using `PathFinder`.
+* `run_complete_pipeline()` — Runs the full workflow automatically (stitch → detect → plan).
+
+---
+
+#### **5. (Optional Utility Classes / Helpers)**
+
+> *(If applicable in your implementation — for logging, visualization, or configuration.)*
+
+---
+
+### 3. `example.py`
+
+**Description:**
+Demonstrates **example usage** of the `DroneLandmineSystem` library with **five test cases** showing different pipeline configurations or datasets.
+
+
+----
 
 
