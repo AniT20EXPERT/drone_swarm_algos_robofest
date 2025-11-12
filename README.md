@@ -133,4 +133,42 @@ This final stage uses the detection data to find a safe and efficient route acro
 
 -----
 
+### files:
+1) stitcher_yolo_path_finding.py : The first implementation script
+2) drone_landmine_detector.py : The implementation script converted into an importable class.
+     This library is organized into 5 main classes:
+            1. DroneImageStitcher
+            Handles video stitching with methods:
+            
+            capture_frames() - Extract frames from videos
+            stitch() - Stitch multiple videos into panorama
+            enhance_brightness_contrast() - Image enhancement
+            crop_black_borders() - Remove black borders
+            
+            2. LandmineDetector
+            Handles YOLO + SAHI detection:
+            
+            load_model() - Load YOLO model
+            detect() - Run SAHI detection on image
+            print_summary() - Show detection statistics
+            visualize_detections() - Draw bounding boxes
+            
+            3. PathFinder
+            A* pathfinding algorithm:
+            
+            add_obstacles() - Mark landmines as obstacles
+            find_path() - Find safe path from start to end
+            visualize_path() - Draw path on image
+            
+            4. DroneLandmineSystem
+            Complete integrated system:
+            
+            stitch_videos() - Stitch drone videos
+            detect_landmines() - Detect landmines
+            find_safe_path() - Find safe route
+            run_complete_pipeline() - Run everything automatically
+
+3) example.py : the example usage with 5 cases.
+
+
 
