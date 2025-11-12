@@ -670,4 +670,131 @@ service, params = controller.parse_command("start scan one")
 print(f"Command parsed: {service} with {params}")
 controller.cleanup()
 ```
+
+-----
+
+## 3\. Documentation: `tts.py`: Local Text-to-Speech (TTS) Module
+
+## Overview
+
+This module provides simple Python wrappers for two local, offline Text-to-Speech (TTS) engines: **eSpeak NG** and **Mimic 1**. It is designed to be cross-platform, with specific playback logic for Windows and Linux (e.g., Raspberry Pi).
+
+The functions work by calling the external command-line tools for each engine, generating speech, and then playing the resulting audio.
+
+## Prerequisites & Installation
+
+This module **requires external command-line tools to be installed** on your system.
+
+### 1\. For `speak_espeak_ng` (Windows & Linux)
+
+This is a versatile, cross-platform engine.
+
+  * **Windows:**
+
+    1.  Download the **`...msi` installer** for eSpeak NG. The latest version can be found on the [eSpeak NG GitHub Releases page](https://github.com/espeak-ng/espeak-ng/releases).
+    2.  Run the installer. This will add `espeak-ng.exe` to your system's `PATH`, allowing the script to find it.
+
+  * **Linux (Debian/Raspberry Pi):**
+
+    1.  Install the `espeak-ng` package:
+        ```bash
+        sudo apt update
+        sudo apt install espeak-ng
+        ```
+    2.  Install `aplay` (part of `alsa-utils`) for audio playback:
+        ```bash
+        sudo apt install alsa-utils
+        ```
+
+### 2\. For `speak_mimic` (Linux / Raspberry Pi)
+
+This engine provides a more natural-sounding voice and is primarily intended for Linux systems.
+
+1.  Install the `mimic` package:
+    ```bash
+    sudo apt update
+    sudo apt install mimic
+    ```
+2.  Install `aplay` (if not already installed) for audio playback when saving to a file:
+    ```bash
+    sudo apt install alsa-utils
+    ```
+
+## Function Reference
+
+-----
+
+### `speak_espeak_ng`
+
+```python
+speak_espeak_ng(text, output_file="output.wav", speed=150, pitch=50, voice="en-us")
+```
+
+Generates speech using `eSpeak NG`, saves it to a `.wav` file, and then plays it. This function is cross-platform (Windows/Linux).
+
+**Parameters:**
+
+  * **`text`** (`str`): The text you want to speak.
+  * **`output_file`** (`str`, optional): The path to save the temporary `.wav` file. Defaults to `"output.wav"`.
+  * **`speed`** (`int`, optional): The speaking speed in words per minute. Defaults to `150`.
+  * **`pitch`** (`int`, optional): The voice pitch (0-99). Defaults to `50`.
+  * **`voice`** (`str`, optional): The voice/language code to use (e.g., `"en-us"`, `"fr"`, `"es"`). Defaults to `"en-us"`.
+
+**Playback Logic:**
+
+  * The function automatically detects the operating system.
+  * On **Windows**, it uses a PowerShell `SoundPlayer` command to play the audio *synchronously* (the script will wait for playback to finish).
+  * On **Linux**, it uses the `aplay` command to play the audio.
+
+-----
+
+### `speak_mimic`
+
+```python
+speak_mimic(text: str, voice: str = "ap", save_to_file: bool = False)
+```
+
+Generates speech using Mycroft's `Mimic 1`. This is primarily intended for Linux/Raspberry Pi.
+
+**Parameters:**
+
+  * **`text`** (`str`): The text you want to speak.
+  * **`voice`** (`str`, optional): The Mimic 1 voice to use. `"ap"` (Alan Pope) is a common, high-quality voice. Defaults to `"ap"`.
+  * **`save_to_file`** (`bool`, optional):
+      * If `False` (default), `mimic` streams the audio directly to the speaker.
+      * If `True`, the audio is first saved to `"speech.wav"` and then played using `aplay`.
+
+**Error Handling:**
+
+  * This function first checks if `mimic` is available in the system's `PATH` using `shutil.which()`.
+  * If the `mimic` executable is not found, it will print an error message and return without speaking.
+
+## Example Usage
+
+The main block of the script provides clear examples for both functions.
+
+```python
+if __name__ == "__main__":
+    
+    # --- Example for Windows ---
+    # This function works on both Windows and Linux,
+    # but is the recommended one for Windows.
+    print("Testing eSpeak NG...")
+    speak_espeak_ng(
+        text="Hello! This is eSpeak NG speaking.",
+        output_file="speech.wav",
+        speed=160,
+        pitch=55,
+        voice="en-us"
+    )
+
+    # --- Example for Raspberry Pi (Linux) ---
+    # This function is recommended for Linux/RPi for a more natural voice.
+    # Make sure 'mimic' is installed first!
+    print("\nTesting Mimic 1...")
+    # The following line is commented out to prevent errors
+    # if you are not on a Raspberry Pi. Uncomment to test.
+    
+    # speak_mimic("Hello! This is mimic one speaking.")
+```
 ----
